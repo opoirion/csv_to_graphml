@@ -42,8 +42,7 @@ def do_graph_from_file(f, sep, outname):
         lines = line.split(sep)
         if len(lines) < 2:
             continue
-        G.add_edge(lines[0].encode('utf8'), lines[1].encode('utf8'))
-
+        G.add_edge(lines[0].encode('utf8').strip('\r\n'), lines[1].encode('utf8').strip('\r\n'))
     nx.write_graphml(G, outname.split('.')[0] +'.graphml')
 
 
