@@ -12,6 +12,7 @@ option:
     -l max number of lines
     -p parsing position options for the two nodes: ex 1,2 or 3,4
     -r activate random mode: draw l lines from the file
+    -d draw graph with pylab
 """
 
 def main():
@@ -44,13 +45,20 @@ def main():
         outname = filename
     if '-p' in sys.argv:
         pos1, pos2 = map(int, sys.argv[sys.argv.index('-p') + 1].split(','))
+        print 'position:', pos1, pos2
     if '-r' in sys.argv:
-        do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2)
+        G = do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2)
     else:
-        do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2)
+        G = do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2)
+
+    if '-d' in sys.argv:
+        import pylab as plt
+        nx.draw(G)
+        plt.show()
+        raw_input('')
 
 def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
-    G = nx.Graph()
+    G = nx.DiGraph()
     i = 0
     for line in f:
         i += 1
@@ -64,12 +72,14 @@ def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
                        lines[pos2].encode('utf8').strip('\\/\r\n '))
         except Exception as e:
             print 'error e:{0} at line:\n\t{0}'.format(e, line)
-    nx.write_graphml(G, outname.split('.')[0] +'.graphml')
+
+    nx.write_gml(G, outname.split('.')[0] +'.graphml')
+    return G
 
 
 def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
     nb_bites = os.path.getsize(f.name)
-    G = nx.Graph()
+    G = nx.DiGraph()
     i = 0
     while i < maxnbline:
         i += 1
@@ -87,8 +97,8 @@ def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
                            lines[pos2].encode('utf8').strip('\\/\r\n '))
             except Exception as e:
                 print 'error e:{0} at line:\n\t{0}'.format(e, line)
-                nx.write_graphml(G, outname.split('.')[0] +'.graphml')
-
+    nx.write_gml(G, outname.split('.')[0] +'.graphml')
+    return G
 
 if __name__ == '__main__':
     main()
