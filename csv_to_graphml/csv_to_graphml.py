@@ -64,8 +64,8 @@ def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
                        lines[pos2].encode('utf8').strip('\\/\r\n '))
         except Exception as e:
             print 'error e:{0} at line:\n\t{0}'.format(e, line)
-    import ipdb;ipdb.set_trace()
     nx.write_graphml(G, outname.split('.')[0] +'.graphml')
+
 
 def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
     nb_bites = os.path.getsize(f.name)
