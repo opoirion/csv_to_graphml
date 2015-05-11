@@ -59,8 +59,11 @@ def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
         lines = line.split(sep)
         if len(lines) < 2:
             continue
-        G.add_edge(lines[pos1].encode('utf8').strip('\r\n'),
-                   lines[pos2].encode('utf8').strip('\r\n'))
+        try:
+            G.add_edge(lines[pos1].encode('utf8').strip('\r\n'),
+                       lines[pos2].encode('utf8').strip('\r\n'))
+        except Exception as e:
+            print 'error e:{0} at line:\n\t{0}'.format(e, line)
     nx.write_graphml(G, outname.split('.')[0] +'.graphml')
 
 def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
