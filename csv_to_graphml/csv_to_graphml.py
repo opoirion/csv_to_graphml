@@ -60,42 +60,33 @@ def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
         if len(lines) < 2:
             continue
         try:
-            G.add_edge(lines[pos1].encode('utf8').strip('\\\r\n'),
-                       lines[pos2].encode('utf8').strip('\\\r\n'))
+            G.add_edge(lines[pos1].encode('utf8').strip('\\\r\n '),
+                       lines[pos2].encode('utf8').strip('\\\r\n '))
         except Exception as e:
             print 'error e:{0} at line:\n\t{0}'.format(e, line)
     nx.write_graphml(G, outname.split('.')[0] +'.graphml')
 
 def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
-
     nb_bites = os.path.getsize(f.name)
     G = nx.Graph()
     i = 0
-
     while i < maxnbline:
         i += 1
         f.seek(0)
         f.seek(randint(0, nb_bites))
-
         f.readline()
-        line = f.readlinimport sys, os
-from random import randint
-import networkx as nx
-
-
-usage = """
-usage: python csv_to_graphml.py <csv path> option
-option:
-    -h help
-    -s separator (default ';')
-    -o output name
-    -l max number of lines
-    -p parsing position options for the two nodes: ex 1,2 or 3,4
-    -r activate random mode: draw l lines from the file
-"""
-
-def main():
-    sep = '    nx.write_graphml(G, outname.split('.')[0] +'.graphml')
+        line = f.readline()
+        if not line:
+            continue
+        lines = line.split(sep)
+        if len(lines) < 2:
+            continue
+            try:
+                G.add_edge(lines[pos1].encode('utf8').strip('\\\r\n '),
+                           lines[pos2].encode('utf8').strip('\\\r\n '))
+            except Exception as e:
+                print 'error e:{0} at line:\n\t{0}'.format(e, line)
+                nx.write_graphml(G, outname.split('.')[0] +'.graphml')
 
 
 if __name__ == '__main__':
