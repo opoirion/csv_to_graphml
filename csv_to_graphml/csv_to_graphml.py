@@ -35,7 +35,7 @@ def main():
         return
 
     if '-s' in sys.argv:
-        sep = sys.argv[sys.argv.index('-s') + 1]
+        sep = sys.argv[sys.argv.index('-s') + 1].strip("'\"")
     if '-l' in sys.argv:
         maxnbline = int(sys.argv[sys.argv.index('-l') + 1])
     if '-o' in sys.argv:
