@@ -39,10 +39,12 @@ def main():
         sep = sys.argv[sys.argv.index('-s') + 1].strip("'\"")
     if '-l' in sys.argv:
         maxnbline = int(sys.argv[sys.argv.index('-l') + 1])
+
     if '-o' in sys.argv:
         outname = sys.argv[sys.argv.index('-o') + 1]
     else:
         outname = filename
+
     if '-p' in sys.argv:
         pos1, pos2 = map(int, sys.argv[sys.argv.index('-p') + 1].split(','))
         print 'position:', pos1, pos2
@@ -73,7 +75,7 @@ def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
         except Exception as e:
             print 'error e:{0} at line:\n\t{0}'.format(e, line)
 
-    nx.write_gml(G, outname.split('.')[0] +'.graphml')
+    nx.write_gml(G, outname.rsplit('.', 1)[0] +'.gml')
     return G
 
 
@@ -97,7 +99,8 @@ def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
                            lines[pos2].encode('utf8').strip('\\/\r\n '))
             except Exception as e:
                 print 'error e:{0} at line:\n\t{0}'.format(e, line)
-    nx.write_gml(G, outname.split('.')[0] +'.graphml')
+
+    nx.write_gml(G, outname.esplit('.', 1)[0] +'.gml')
     return G
 
 if __name__ == '__main__':
