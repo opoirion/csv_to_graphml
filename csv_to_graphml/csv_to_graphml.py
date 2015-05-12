@@ -100,7 +100,7 @@ def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
             except Exception as e:
                 print 'error e:{0} at line:\n\t{0}'.format(e, line)
 
-    nx.write_gml(G, outname.esplit('.', 1)[0] +'.gml')
+    nx.write_gml(G, outname.rsplit('.', 1)[0] +'.gml')
     return G
 
 if __name__ == '__main__':
