@@ -1,6 +1,7 @@
 import sys, os
 from random import randint
 import networkx as nx
+import re
 
 
 usage = """
@@ -70,10 +71,15 @@ def do_graph_from_file(f, sep, outname, maxnbline, pos1, pos2):
         if len(lines) < 2:
             continue
         try:
-            G.add_edge(lines[pos1].encode('utf8').strip('\\/\r\n '),
-                       lines[pos2].encode('utf8').strip('\\/\r\n '))
-        except Exception as e:
-            print 'error e:{0} at line:\n\t{0}'.format(e, line)
+            node1 = lines[pos1].encode('utf8').strip('\\/\r\n ')
+            node2 = lines[pos2].encode('utf8').strip('\\/\r\n ')
+            node1 = re.sub('www\.', '', re.sub('http://', '', node1))
+            node2 = re.sub('www\.', '', re.sub('http://', '', node2))
+
+            G.add_edge(node1, node2)
+        except Exception:
+            print 'error at line:\n\t{0}'.format(line)
+            continue
 
     nx.write_gml(G, outname.rsplit('.', 1)[0] +'.gml')
     return G
@@ -95,10 +101,15 @@ def do_graph_from_file_random(f, sep, outname, maxnbline, pos1, pos2):
         if len(lines) < 2:
             continue
             try:
-                G.add_edge(lines[pos1].encode('utf8').strip('\\/\r\n '),
-                           lines[pos2].encode('utf8').strip('\\/\r\n '))
+                node1 = lines[pos1].encode('utf8').strip('\\/\r\n ')
+                node2 = lines[pos2].encode('utf8').strip('\\/\r\n ')
+                node1 = re.sub('www\.', '', re.sub('http://', '', node1))
+                node2 = re.sub('www\.', '', re.sub('http://', '', node2))
+
+                G.add_edge(node1, node2)
             except Exception as e:
                 print 'error e:{0} at line:\n\t{0}'.format(e, line)
+                continue
 
     nx.write_gml(G, outname.rsplit('.', 1)[0] +'.gml')
     return G
